@@ -1,15 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Exo} from "next/font/google";
 import "./globals.css";
+import Navbar from "./-component/Navbar/Navbar";
+import Footer from "./-component/Footer/Footer";
+import { Toaster } from "@/components/ui/toast"
+import { cn } from "@/lib/utils";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+import { Button } from "@/components/ui/button"
+import FirstNav from "./-component/firstNav/FirstNav";
+import { Weight } from "lucide-react";
+import MyProvider from "./-component/myProvider/MyProvider";
+import Providers from "./-component/TanStackProvider/TanStackProvider";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+
+
+
+const Exofont = Exo({
+  variable: "--font-Exo",
+  subsets:['latin'],
+  weight:['100','400' ,'700']
 });
 
 export const metadata: Metadata = {
@@ -21,9 +30,23 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${Exofont.className} antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body>
+        <Providers>
+        <MyProvider>
+          
+        <FirstNav/>
+        <Navbar/>
+        {children}
+        
+          <Toaster />
+
+
+        <Footer/>
+        </MyProvider>
+        </Providers>
+      </body>
     </html>
   );
 }
