@@ -8,6 +8,9 @@ export interface Category {
   createdAt: string;
   updatedAt: string;
 }
+export interface SubcategoryResponse {
+  data: Subcategory;
+}
 
 export interface CategoriesMetadata {
   currentPage: number;
@@ -81,3 +84,31 @@ export async function fetSubcategories(
     throw new Error("Api Error");
   }
 }
+
+export interface SubcategoryResponse {
+  data: Subcategory;
+}
+
+export async function fetSubcategoryById(
+  id: string
+): Promise<Subcategory> {
+  try {
+    const response = await fetch(
+      `https://ecommerce.routemisr.com/api/v1/subcategories/${id}`,
+      {
+        next: { revalidate: 3600 },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Api Error");
+    }
+
+    const payload: SubcategoryResponse = await response.json();
+
+    return payload.data;
+  } catch (error) {
+    throw new Error("Api Error");
+  }
+}
+

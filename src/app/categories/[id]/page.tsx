@@ -18,9 +18,10 @@ export default async function SubcategoriesPage({ params }: PageProps) {
       fetCategoryById(id),
       fetSubcategories(id),
     ]);
-  } catch (error) {
-    notFound();
-  }
+  }  catch (error) {
+  console.error("CATEGORY PAGE ERROR:", error);
+  throw error;
+}
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
@@ -39,22 +40,21 @@ export default async function SubcategoriesPage({ params }: PageProps) {
       {subcategories.length === 0 ? (
         <p className="text-secondary">No subcategories found.</p>
       ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {subcategories.map((sub) => (
-            <div
-              key={sub._id}
-              className="group flex flex-col gap-4 rounded-2xl border border-transparent bg-white p-5 shadow-sm transition-all hover:border-primary hover:shadow-md"
-            >
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-green-50 text-primary">
-                <Folder size={20} />
-              </div>
+       subcategories.map((sub) => (
+  <Link
+  key={sub._id}
+  href={`/subcategories/${sub._id}`}
+  className="group flex flex-col gap-4 rounded-2xl border border-transparent bg-white p-5 shadow-sm transition-all hover:border-primary hover:shadow-md"
+>
+  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-green-50 text-primary">
+    <Folder size={20} />
+  </div>
 
-              <span className="font-semibold text-gray-700 transition-colors group-hover:text-primary">
-                {sub.name}
-              </span>
-            </div>
-          ))}
-        </div>
+  <span className="font-semibold text-gray-700 transition-colors group-hover:text-primary">
+    {sub.name}
+  </span>
+</Link>
+))
       )}
     </div>
   );

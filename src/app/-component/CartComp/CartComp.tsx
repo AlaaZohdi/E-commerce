@@ -17,6 +17,8 @@ import { cartResponseType, Product } from "@/api/types/cartType";
 import { deleteCartItem } from "@/api/actions/cartActions/deleteCartItem";
 import { toast } from "@/components/ui/toast";
 import { updateCart } from "@/api/actions/cartActions/updateCartItem";
+import { ClaerCart } from "@/api/actions/cartActions/clearCart";
+import Link from "next/link";
 
 export default function CartComp() {
   const query = useQueryClient()
@@ -74,12 +76,38 @@ export default function CartComp() {
     }
   })
 
+
+  // clear Cart 
+   const {data:clearData ,mutate:clearCartItem}= useMutation({
+    mutationFn :ClaerCart ,
+    onSuccess:()=>{
+      query.invalidateQueries({
+        queryKey:['getCart']
+      })
+      toast.add({
+  type: "success",
+  description: "Cart deleted Successfully " ,
+})
+    },
+    onError:()=>{
+    toast.add({
+  type: "error",
+  description: " Faild to delete" ,
+})
+    }
+  })
+
+
   function handleUpdateCart(prodID:string ,count:number){
     updateItem({prodID , count});
 
 
   }
 
+  function handleClearCart(){
+    clearCartItem()
+
+  }
   if (isLoading) {
     return <div className="py-20 text-center">Loading...</div>;
   }
@@ -267,6 +295,10 @@ export default function CartComp() {
                 </div>
               );
             })}
+<button onClick={handleClearCart} className=' text-primary border-none hover:text-red-500 transition-colors duration-200 px-4 py-2 '>
+  Clear All items
+</button>
+
 
           </div>
 
@@ -378,13 +410,13 @@ export default function CartComp() {
 
 
               {/* Checkout */}
-              <button className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-4 font-semibold text-white shadow-md transition hover:opacity-90">
-
-                <LockKeyhole size={18} />
-
-                Secure Checkout
-
-              </button>
+            <Link
+  href={`/checkout/${cartData?.cartId}`}
+  className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-4 font-semibold text-white shadow-md transition hover:opacity-90"
+>
+  <LockKeyhole size={18} />
+  Secure Checkout
+</Link>
 
 
               {/* Features */}

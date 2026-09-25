@@ -252,10 +252,8 @@ export default function Navbar() {
           </Link>
 
           <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger >
-              <button className="flex h-11 w-11 items-center justify-center rounded-full bg-primary text-white">
+            <SheetTrigger className="flex h-11 w-11 items-center justify-center rounded-full bg-primary text-white">
                 <Menu size={22} />
-              </button>
             </SheetTrigger>
 
             <SheetContent
