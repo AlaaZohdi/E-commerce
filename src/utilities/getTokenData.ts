@@ -1,15 +1,24 @@
 import { decode } from "next-auth/jwt";
-import { cookies } from "next/headers"
+import { cookies } from "next/headers";
 
+export async function getTokenFun() {
+  const cookieStore = await cookies();
 
-export async function getTokenFun(){
-     const cookie=   await cookies() ;
- const nextAuthToken = cookie.get('next-auth.session-token')?.value
- const accessToken =await decode({
-    secret :process.env.NEXTAUTH_SECRET!,
-    token:nextAuthToken
- })
- console.log(accessToken?.token);
- 
-  return accessToken?.token
+  const nextAuthToken =
+    cookieStore.get("__Secure-next-auth.session-token")?.value ??
+    cookieStore.get("next-auth.session-token")?.value;
+
+  if (!nextAuthToken) {
+    return undefined;
+  }
+
+  const accessToken = await decode({
+    secret: process.env.NEXTAUTH_SECRET!,
+    token: nextAuthToken,
+  });
+
+  console.log("Decoded token exists:", !!accessToken);
+  console.log("API token exists:", !!accessToken?.token);
+
+  return accessToken?.token;
 }
