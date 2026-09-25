@@ -38,6 +38,7 @@ export interface ShippingAddress {
   details: string;
   phone: string;
   postalCode: string;
+  paymentMethod: "cash" | "card";
 }
 
 export default function CheckOutForm({ cartId }: { cartId: string }) {
@@ -68,12 +69,13 @@ export default function CheckOutForm({ cartId }: { cartId: string }) {
   });
 
  async function onSubmit(values: CheckoutSchemaType) {
-  const shippingAddress: ShippingAddress = {
-    details: values.details,
-    phone: values.phone,
-    city: values.city,
-    postalCode: values.postalCode,
-  };
+ const shippingAddress: ShippingAddress = {
+  details: values.details,
+  phone: values.phone,
+  city: values.city,
+  postalCode: values.postalCode,
+  paymentMethod: values.paymentMethod,
+};
 
   try {
     setSubmitting(true);
