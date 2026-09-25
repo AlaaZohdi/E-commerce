@@ -205,6 +205,10 @@ export default function Login() {
             </button>
           </form>
 
+              <Link href='/forgotPassword' 
+              className='hover:text-primary'>Forget Password ?</Link>
+
+
           <p className="mt-6 text-center text-sm text-gray-600">
              New to FreshCart?{" "}
             <Link href="/login" className="font-semibold text-primary hover:opacity-80">
